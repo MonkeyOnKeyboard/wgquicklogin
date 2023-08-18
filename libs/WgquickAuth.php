@@ -158,7 +158,7 @@ class WgquickAuth
     }
     
     /**
-     * @param string $token
+     * @param string 
      */
     public function setNofollow($nofollow){
         $this->nofollow = $nofollow;
@@ -172,7 +172,7 @@ class WgquickAuth
     }
     
     /**
-     * @param string $tokenSecret
+     * @param string 
      */
     public function setExpires_at($expires_at){
         $this->expires_at = $expires_at;

@@ -225,9 +225,8 @@ class Auth extends Frontend
             
             return $redirectUrl;
         }
-        //var_dump($auth->user()[id]);
-        //die("<pre>".print_r($auth->user(),TRUE));
 
+        
         $wgUser = [];
 
         try {
@@ -235,12 +234,13 @@ class Auth extends Frontend
             
             
             $wgUser = [
-                'user_id' => $auth->user()[id],
-                'oauth_token' => $auth->user()[token],
-                'screen_name' => $auth->user()[nickname],
+                'user_id' => $auth->user()['id'],
+                'oauth_token' => $auth->user()['token'],
+                'screen_name' => $auth->user()['nickname'],
                 'oauth_token_user' => null,
             ];
 
+            
             $authProvider = new AuthProvider();
             $existingLink = $authProvider->providerAccountIsLinked('wgquicklogin_wg', $wgUser['user_id']);
 
