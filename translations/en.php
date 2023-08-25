@@ -58,5 +58,5 @@ return [
     'wgquicklogin.loghasbeencleared' => 'Log was successfully cleared.',
     'wgquicklogin.confirmclear' => 'Do you really want to clear the complete log??',
 
-    'wgquicklogin.messages.registrationNotAllowed' => 'Registration is currently not allowed.',
+    'wgquicklogin.registrationNotAllowed' => 'Registration is currently not allowed.',
 ];

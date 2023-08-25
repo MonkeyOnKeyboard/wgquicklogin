@@ -4,7 +4,6 @@ namespace Modules\Wgquicklogin\Controllers\Admin;
 
 use Modules\Wgquicklogin\Mappers\DbLog;
 
-
 class Index extends Base
 {
     public function indexAction()

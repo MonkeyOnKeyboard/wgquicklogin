@@ -40,7 +40,7 @@
             <?= $this->getTrans('wgquicklogin.rules') ?>
         </div>
         <div class="panel-footer">
-            <button type="submit" class="btn btn-primary"><i class="fas fa-arrow-right"></i> <?= $this->getTrans('wgquicklogin.completeregistration') ?></button>
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-arrow-right"></i> <?= $this->getTrans('wgquicklogin.completeregistration') ?></button>
             <a href="#" class="btn btn-default"><?= $this->getTrans('wgquicklogin.cancel') ?></a>
         </div>
     </div>

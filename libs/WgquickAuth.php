@@ -1,10 +1,8 @@
 <?php
 namespace Modules\Wgquicklogin\Libs;
 
-use Ilch\Database\Exception;
 use Ilch\Request;
 use Modules\Wgquicklogin\Mappers\DbLog;
-use Ilch\Redirect;
 
 /**
  * WgquickAuth Class
@@ -114,7 +112,7 @@ class WgquickAuth
     public function getAuthURL(){
         return $this->authUrl;
     }
-    
+
     /**
      * @param string $apiKey
      */

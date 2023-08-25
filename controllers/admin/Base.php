@@ -14,7 +14,7 @@ class Base extends Admin {
             [
                 'name' => 'wgquicklogin.menu.logs',
                 'active' => $this->isActive('index', 'index'),
-                'icon' => 'fas fa-list',
+                'icon' => 'fa-solid fa-list',
                 'url' => $this->getLayout()->getUrl(['controller' => 'index', 'action' => 'index'])
             ]
         ];
@@ -28,12 +28,12 @@ class Base extends Admin {
     /**
      * Checks if the menu item is active
      *
-     * @param $controller
-     * @param $action
+     * @param string $controller
+     * @param string $action
      *
      * @return bool
      */
-    protected function isActive($controller, $action)
+    protected function isActive(string $controller, string $action): bool
     {
         return $this->getRequest()->getControllerName() === $controller && $this->getRequest()->getActionName() === $action;
     }
