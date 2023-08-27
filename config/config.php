@@ -10,10 +10,10 @@ class Config extends \Ilch\Config\Install
 {
     public $config = [
         'key' => 'wgquicklogin',
-        'icon_small' => 'fa-sign-in',
+        'icon_small' => 'fa-solid fa-right-to-bracket',
         'author' => 'MonkeyOnKeyboard',
         'hide_menu' => true,
-        'version' => '1.0.0',
+        'version' => '1.0.1',
         'languages' => [
             'de_DE' => [
                 'name' => 'Anmelden mit WG Quicklogin',
@@ -24,8 +24,8 @@ class Config extends \Ilch\Config\Install
                 'description' => 'Allows users to sign in through WG Quicklogin.',
             ],
         ],
-        'ilchCore' => '2.1.41',
-        'phpVersion' => '7.0'
+        'ilchCore' => '2.1.48',
+        'phpVersion' => '7.3'
     ];
 
     public function install()
@@ -36,7 +36,7 @@ class Config extends \Ilch\Config\Install
                 ->values([
                     'key' => 'wgquicklogin_wg',
                     'name' => 'WGQuicklogin',
-                    'icon' => 'fa-sign-in'
+                    'icon' => 'fa-solid fa-right-to-bracket'
                 ])
                 ->execute();
         }
@@ -89,14 +89,15 @@ class Config extends \Ilch\Config\Install
     {
         switch ($installedVersion) {
             case "1.0.0":
-                //
+                $this->db()->query("UPDATE `[prefix]_modules` SET `icon_small` = '" . $this->config['icon_small'] . "' WHERE `key` = '" . $this->config['key'] . "';");
+                // no break
         }
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
-    private function providerExists()
+    private function providerExists(): bool
     {
         return (bool) $this->db()
             ->select('key')

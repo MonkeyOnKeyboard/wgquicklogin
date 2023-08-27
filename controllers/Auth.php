@@ -3,6 +3,7 @@
 namespace Modules\Wgquicklogin\Controllers;
 
 use Ilch\Controller\Frontend;
+use Ilch\Date;
 use Modules\Wgquicklogin\Libs\WgquickAuth as WgquickAuth;
 use Modules\Wgquicklogin\Mappers\DbLog;
 use Modules\User\Mappers\AuthProvider;
@@ -74,7 +75,7 @@ class Auth extends Frontend
             $registMapper = new UserMapper();
             $groupMapper = new Group();
             $userGroup = $groupMapper->getGroupById(2);
-            $currentDate = new \Ilch\Date();
+            $currentDate = new Date();
 
             $user = (new User())
                 ->setName($input['userName'])
@@ -115,7 +116,6 @@ class Auth extends Frontend
                 }
                 
                 $this->redirect($redirectUrl);
-                //$this->redirect(['module' => 'user', 'controller' => 'panel', 'action' => 'index']);
             }
 
             $this->addMessage($this->getTranslator()->trans('wgquicklogin.linkfailed'), 'danger');
@@ -133,7 +133,6 @@ class Auth extends Frontend
     {
         if (loggedIn()) {
             $authProvider = new AuthProvider();
-            $authProviderUser = $authProvider->getLinkedProviderDetails('wgquicklogin_wg', currentUser()->getId());
 
             if ($this->getRequest()->isPost()) {
                 $res = $authProvider->unlinkUser('wgquicklogin_wg', currentUser()->getId());
@@ -176,8 +175,7 @@ class Auth extends Frontend
         try {
             
             $this->redirect($auth->redirectUrl());
-            //die("<pre>".print_r($auth->redirectUrl(),TRUE));
-           
+
         } catch (\Exception $e) {
             $this->addMessage($this->getTranslator()->trans('wgquicklogin.authenticationfailure'), 'danger');
 
@@ -219,27 +217,17 @@ class Auth extends Frontend
        
         
         if ($auth->verify()) {
-            $user = $auth->user();
-            
-            //
-            
             return $redirectUrl;
         }
 
-        
-        $wgUser = [];
 
         try {
-            
-            
-            
             $wgUser = [
                 'user_id' => $auth->user()['id'],
                 'oauth_token' => $auth->user()['token'],
                 'screen_name' => $auth->user()['nickname'],
                 'oauth_token_user' => null,
             ];
-
             
             $authProvider = new AuthProvider();
             $existingLink = $authProvider->providerAccountIsLinked('wgquicklogin_wg', $wgUser['user_id']);
@@ -376,7 +364,7 @@ class Auth extends Frontend
      *
      * @return LoginResult
      */
-    protected function login(int $user_id)
+    protected function login(int $user_id): LoginResult
     {
         $userMapper = new UserMapper();
         $userMapper->deleteselectsdelete(($this->getConfig()->get('userdeletetime')));
@@ -419,7 +407,7 @@ class Auth extends Frontend
     /**
      * @return DbLog
      */
-    protected function dbLog()
+    protected function dbLog(): DbLog
     {
         if ($this->dbLog instanceof DbLog) {
             return $this->dbLog;
