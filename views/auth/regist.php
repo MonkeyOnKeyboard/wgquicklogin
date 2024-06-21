@@ -1,12 +1,12 @@
 <link href="<?=$this->getModuleUrl('static/css/steam.css') ?>" rel="stylesheet">
 
 <form class="form-horizontal" method="POST" action="<?= $this->getUrl(['action' => 'save']) ?>" autocomplete="off">
-    <legend><i class="fa-sign-in"></i><?=$this->getTrans('wgquicklogin.wgquicklogin') ?></legend>
-    <div class="panel panel-default">
-        <div class="bg-info panel-body">
+    <legend><i class="fa-solid fa-right-to-bracket"></i> <?=$this->getTrans('wgquicklogin.wgquicklogin') ?></legend>
+    <div class="card card-default">
+        <div class="bg-info card-body">
             <?= $this->getTrans('wgquicklogin.passwordandemailneeded') ?>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
             <?=$this->getTokenField() ?>
             <div class="form-group <?= ! $this->validation()->hasError('userName') ?: 'has-error' ?>">
                 <label for="userNameInput" class="col-lg-3 control-label">
@@ -33,13 +33,13 @@
                 </div>
             </div>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
             <?= $this->get('rules') ?>
         </div>
-        <div class="bg-info panel-body">
+        <div class="bg-info card-body">
             <?= $this->getTrans('wgquicklogin.rules') ?>
         </div>
-        <div class="panel-footer">
+        <div class="card-footer">
             <button type="submit" class="btn btn-primary"><i class="fa-solid fa-arrow-right"></i> <?= $this->getTrans('wgquicklogin.completeregistration') ?></button>
             <a href="#" class="btn btn-default"><?= $this->getTrans('wgquicklogin.cancel') ?></a>
         </div>

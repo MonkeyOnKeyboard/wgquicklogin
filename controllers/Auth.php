@@ -249,7 +249,7 @@ class Auth extends Frontend
 
                 if ($existingLink === true) {
                     $this->dbLog()->info(
-                        "User " . currentUser()->getName() . " tried to link an already linked steam account.",
+                        "User " . currentUser()->getName() . " tried to link an already linked WG account.",
                         [
                             'userId' => currentUser()->getId(),
                             'userName' => currentUser()->getName(),
@@ -273,7 +273,7 @@ class Auth extends Frontend
 
                 if ($link === true) {
                     $this->dbLog()->info(
-                        "User " . currentUser()->getName() . " has linked a steam account.",
+                        "User " . currentUser()->getName() . " has linked a WG account.",
                         [
                             'userId' => currentUser()->getId(),
                             'userName' => currentUser()->getName(),
@@ -286,7 +286,7 @@ class Auth extends Frontend
                 }
 
                 $this->dbLog()->error(
-                    "User " . currentUser()->getName() . " could not link his steam account.",
+                    "User " . currentUser()->getName() . " could not link his WG account.",
                     [
                         'userId' => currentUser()->getId(),
                         'userName' => currentUser()->getName(),

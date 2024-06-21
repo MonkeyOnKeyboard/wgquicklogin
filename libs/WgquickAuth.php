@@ -106,76 +106,7 @@ class WgquickAuth
         $this->setTimestamp(time()+60);
     }
     
-    /**
-     * @return string
-     */
-    public function getAuthURL(){
-        return $this->authUrl;
-    }
-
-    /**
-     * @param string $apiKey
-     */
-    public function setAuthURL($authurl){
-        $this->authUrl = $authurl;
-    }
-    
-    /**
-     * @return string
-     */
-    public function getApplication_id(){
-        return $this->application_id;
-    }
-    
-    /**
-     * @param string $apiKey
-     */
-    public function setApplication_id($application_id){
-        $this->application_id = $application_id;
-    }
-    
-    /**
-     * @return string
-     */
-    public function getDisplay(){
-        return $this->display;
-    }
-    
-    /**
-     * @param string $apiSecret
-     */
-    public function setDisplay($display){
-        $this->display = $display;
-    }
-    
-    /**
-     * @return string
-     */
-    public function getNofollow(){
-        return $this->nofollow;
-    }
-    
-    /**
-     * @param string 
-     */
-    public function setNofollow($nofollow){
-        $this->nofollow = $nofollow;
-    }
-    
-    /**
-     * @return string
-     */
-    public function getExpires_at(){
-        return $this->expires_at;
-    }
-    
-    /**
-     * @param string 
-     */
-    public function setExpires_at($expires_at){
-        $this->expires_at = $expires_at;
-    }
-    
+        
     /**
      * @return string
      */
@@ -190,26 +121,7 @@ class WgquickAuth
         $this->timestamp = $timestamp;
     }
     
-    /**
-     * @return array
-     */
-    public function getParameters(){
-        //ksort($this->parameters);
-        return $this->parameters;
-    }
-    
-    /**
-     * @param array $parameters
-     */
-    public function setParameters($parameters){
-        $this->parameters = $parameters;
-    }
-    
-    public function setParameter($key, $value){
-        $this->parameters[$key] = $value;
-        return $this;
-    }
-    
+        
     /**
      * @return string
      */
@@ -401,14 +313,14 @@ class WgquickAuth
     }
 
     /**
-     * Prints debug information about steamauth
+     * Prints debug information about wgquicklogin
      */
     public function debug()
     {
         echo "<h1>WgquickAuth debug report</h1><hr><b>Settings-array:</b><br>";
         echo "<pre>" . print_r($this->settings, true) . "</pre>";
         echo "<br><br><b>Data:</b><br>";
-        echo "<pre>" . print_r($_SESSION["steamdata"], true) . "</pre>";
+        echo "<pre>" . print_r($_SESSION["wgquicklogin"], true) . "</pre>";
     }
     
        
