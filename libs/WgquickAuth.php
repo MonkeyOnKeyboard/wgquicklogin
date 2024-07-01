@@ -1,52 +1,37 @@
 <?php
+
 namespace Modules\Wgquicklogin\Libs;
 
-use Ilch\Request;
-use Modules\Wgquicklogin\Mappers\DbLog;
+use Exception;
 
 /**
  * WgquickAuth Class
- *
- * @package   WgquickAuth
- * @author    Vikas Kapadiya <vikas@kapadiya.net>
- * @author    BlackCetha
- * @license   https://opensource.org/licenses/MIT The MIT License
- * @link      https://github.com/vikas5914/steam-auth
- * @version   1.0.0
  */
 
 class WgquickAuth
 {
-    
     /**
      * Url OpenID EU
      */
-    const OPEN_ID_URL = 'https://eu.wargaming.net/id/openid/';
-    
-    CONST REGION = 'eu';
-    
-    /**
-     * Illuminate request class.
-     *
-     * @var Request
-     */
-    protected $request;
-    
-        
+    public const OPEN_ID_URL = 'https://eu.wargaming.net/id/openid/';
+
+    public const REGION = 'eu';
+
+
     /**
      * Region.
      *
      * @var string
      */
     protected $region;
-    
+
     /**
      * Realm
      *
      * @var string
      */
     protected $realm;
-    
+
 
     /**
      * The callback url
@@ -54,90 +39,61 @@ class WgquickAuth
      * @var string
      */
     protected $callbackUrl;
-    
+
     /**
      * The parameters
      *
      * @var array
      */
     protected $parameters;
-    
-        
+
+
     /**
      * The Auth url openid
      *
      * @var string
      */
     protected $authUrl;
-    
+
     /**
      * The Token
      *
      * @var string
      */
     protected $token;
-    
-    
+
+
     /**
      * Creates new instance.
-     *
+     * @param string|null $callbackUrl
      */
-    
-      
-    
     public function __construct(
-        $callbackUrl = null
-        ) {
-            
-            $this->setCallbackUrl($callbackUrl);
-            $this->region = self::REGION;
-            $this->dbLog = new DbLog();
-            $this->generateTimestamp();
+        ?string $callbackUrl = null
+    ) {
+
+        $this->setCallbackUrl($callbackUrl ?? '');
+        $this->region = self::REGION;
     }
-    
-    /**
-     * Returns a timestamp
-     *
-     * @see https://dev.wargaming.com/oauth/overview/authorizing-requests
-     *
-     * @return void
-     */
-    protected function generateTimestamp(){
-        $this->setTimestamp(time()+60);
-    }
-    
-        
+
+
     /**
      * @return string
      */
-    public function getTimestamp(){
-        return $this->timestamp;
-    }
-    
-    /**
-     * @param string $timestamp
-     */
-    public function setTimestamp($timestamp){
-        $this->timestamp = $timestamp;
-    }
-    
-        
-    /**
-     * @return string
-     */
-    public function getCallbackUrl(){
+    public function getCallbackUrl(): string
+    {
         return $this->callbackUrl;
     }
-    
+
     /**
      * @param string $callbackUrl
      */
-    public function setCallbackUrl($callbackUrl){
+    public function setCallbackUrl(string $callbackUrl)
+    {
         $this->callbackUrl = $callbackUrl;
     }
-    
- 
-    
+
+
+
     /**
      * Returns the region.
      *
@@ -147,7 +103,7 @@ class WgquickAuth
     {
         return $this->region;
     }
-    
+
     /**
      * Set the region.
      *
@@ -157,7 +113,7 @@ class WgquickAuth
     {
         $this->region = $region;
     }
-    
+
     /**
      * Returns the realm.
      *
@@ -167,7 +123,7 @@ class WgquickAuth
     {
         return $this->realm;
     }
-    
+
     /**
      * Set the realm.
      *
@@ -177,7 +133,7 @@ class WgquickAuth
     {
         $this->realm = $realm;
     }
-    
+
     /**
      * Returns the OpenID URL.
      *
@@ -210,7 +166,7 @@ class WgquickAuth
 
         return $this->getOpenIdUrl() . '?' . http_build_query($params, '', '&');
     }
-    
+
     /**
      * OpenID Positive Assertions.
      *
@@ -230,12 +186,12 @@ class WgquickAuth
             'openid_sig' => $_GET['openid_sig'],
             'openid_signed' => $_GET['openid_signed'],
         ];
-        
+
         $isModeIdRes = $_GET['openid_mode'] === 'id_res';
-        
+
         return $hasFields && $isModeIdRes;
     }
-    
+
     /**
      * OpenID Verifying the Return URL.
      *
@@ -245,7 +201,7 @@ class WgquickAuth
     {
         return $_GET['openid_return_to'] === $this->getCallbackUrl();
     }
-    
+
     /**
      * Get param list for OpenID validation
      *
@@ -255,17 +211,17 @@ class WgquickAuth
     {
         $params = [];
         $signedParams = explode(',', $_GET['openid_signed']);
-        
+
         foreach ($signedParams as $item) {
             $params['openid.' . $item] = $_GET['openid_' . str_replace('.', '_', $item)];
         }
-        
+
         $params['openid.mode'] = 'check_authentication';
         $params['openid.sig'] = $_GET['openid_sig'];
-        
+
         return $params;
     }
-    
+
     /**
      * OpenID Verifying Signatures (Wargaming uses Direct Verification).
      *
@@ -274,16 +230,60 @@ class WgquickAuth
      */
     public function verifyingSignatures(): bool
     {
-                
-        $response = request('POST', $this->getOpenIdUrl(), [
-            'form_params' => $this->getOpenIdValidationParams(),
-        ]);
-        
-        $content = $response->getBody()->getContents();
-        
+        $content = $this->sendRequest('POST', $this->getOpenIdUrl(), $this->getOpenIdValidationParams());
+
         return strpos($content, 'is_valid:true') !== false;
     }
-    
+
+    /**
+     * @param string $method
+     * @param string $url
+     * @param array|null $data
+     * @return bool|string
+     */
+    public function sendRequest(string $method, string $url, ?array $data = [])
+    {
+        $response = false;
+        try {
+            // Initialisieren einer cURL-Sitzung
+            $ch = curl_init();
+
+            // Konvertieren Sie das Datenarray in einen URL-kodierten Abfrage-String für GET-Anfragen
+            if ($method == 'GET' && !empty($data)) {
+                $queryString = http_build_query($data);
+                $url .= '?' . $queryString;
+            }
+
+            // Setzen der cURL-Optionen
+            curl_setopt_array($ch, [
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+            ]);
+
+            // Für POST-Anfragen
+            if ($method == 'POST') {
+                curl_setopt($ch, CURLOPT_POST, 1);
+                if (!empty($data)) {
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+                }
+            }
+
+            // Ausführen der Anfrage und Abrufen der Antwort
+            $response = curl_exec($ch);
+
+            if (curl_errno($ch)) {
+                throw new Exception(curl_error($ch));
+            }
+        } catch (Exception $e) {
+            return false;
+        } finally {
+            if (is_resource($ch)) {
+                curl_close($ch);
+            }
+        }
+        return $response;
+    }
+
     /**
      * Process to verify an OpenID assertion.
      *
@@ -293,10 +293,10 @@ class WgquickAuth
     public function verify(): bool
     {
         return $this->isPositiveAssertion()
-        && $this->verifyingReturnUrl()
-        && $this->verifyingSignatures();
+            && $this->verifyingReturnUrl()
+            && $this->verifyingSignatures();
     }
-    
+
     /**
      * Returns the user data.
      *
@@ -308,20 +308,25 @@ class WgquickAuth
             'id' => $_GET['openid_ax_value_ext0_1'],
             'nickname' => $_GET['openid_ax_value_ext1_1'],
             'token' => $_GET['openid_assoc_handle'],
-            
+
         ];
     }
 
     /**
      * Prints debug information about wgquicklogin
+     *
+     * @param bool $print
+     * @return string
      */
-    public function debug()
+    public function debug(bool $print = true): string
     {
-        echo "<h1>WgquickAuth debug report</h1><hr><b>Settings-array:</b><br>";
-        echo "<pre>" . print_r($this->settings, true) . "</pre>";
-        echo "<br><br><b>Data:</b><br>";
-        echo "<pre>" . print_r($_SESSION["wgquicklogin"], true) . "</pre>";
+        $var = "<h1>WgquickAuth debug report</h1><hr>";
+        $var .= "<br><br><b>Data:</b><br>";
+        $var .= "<pre>" . print_r($_SESSION["wgquicklogin"], true) . "</pre>";
+
+        if ($print) {
+            echo $var;
+        }
+        return $var;
     }
-    
-       
 }

@@ -1,5 +1,7 @@
-<link href="<?=$this->getModuleUrl('static/css/steam.css') ?>" rel="stylesheet">
+<?php
 
+/** @var $this \Ilch\View */
+?>
 <form class="form-horizontal" method="POST" action="<?= $this->getUrl(['action' => 'save']) ?>" autocomplete="off">
     <legend><i class="fa-solid fa-right-to-bracket"></i> <?=$this->getTrans('wgquicklogin.wgquicklogin') ?></legend>
     <div class="card card-default">

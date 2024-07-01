@@ -14,7 +14,6 @@ use Modules\User\Models\User;
 use Modules\User\Service\Password as PasswordService;
 use Ilch\Validation;
 use Modules\User\Mappers\CookieStolen as CookieStolenMapper;
-
 use Modules\User\Service\Remember as RememberMe;
 use Modules\User\Service\Login\Result as LoginResult;
 
@@ -32,7 +31,7 @@ class Auth extends Frontend
     {
         $oauth = array_dot($_SESSION, 'wgquicklogin.login');
 
-        if (!$oauth || array_dot($_SESSION, 'wgquicklogin.login.expires') < time() ) {
+        if (!$oauth || array_dot($_SESSION, 'wgquicklogin.login.expires') < time()) {
             $this->addMessage($this->getTranslator()->trans('wgquicklogin.logindenied'), 'danger');
             $this->redirect(['module' => 'user', 'controller' => 'login', 'action' => 'index']);
         }
@@ -106,15 +105,15 @@ class Auth extends Frontend
                     }
 
                     if ($result->getError() != '') {
-                        $this->addMessage($this->getTranslator()->trans('wgquicklogin.'.$result->getError()), 'warning');
+                        $this->addMessage($this->getTranslator()->trans('wgquicklogin.' . $result->getError()), 'warning');
                     }
 
                     $this->addMessage($this->getTranslator()->trans('wgquicklogin.linksuccess'));
                 } else {
-                    $this->addMessage($this->getTranslator()->trans('wgquicklogin.'.$result->getError()), 'warning');
+                    $this->addMessage($this->getTranslator()->trans('wgquicklogin.' . $result->getError()), 'warning');
                     $redirectUrl = ['module' => 'user', 'controller' => 'login', 'action' => 'index'];
                 }
-                
+
                 $this->redirect($redirectUrl);
             }
 
@@ -162,27 +161,26 @@ class Auth extends Frontend
             'controller' => 'auth',
             'action' => 'callback',
         ]);
-    
+
         if ($this->getRequest()->getPost('rememberMe')) {
             array_dot_set($_SESSION, 'wgquicklogin.rememberMe', $this->getRequest()->getPost('rememberMe'));
         }
         array_dot_set($_SESSION, 'wgquicklogin.login_redirect_url', $this->getRequest()->getPost('login_redirect_url'));
 
         $auth = new WgquickAuth(
-            $callbackUrl
-            );
+            $callbackUrl,
+            $this->getRequest()
+        );
 
         try {
-            
             $this->redirect($auth->redirectUrl());
-
         } catch (\Exception $e) {
             $this->addMessage($this->getTranslator()->trans('wgquicklogin.authenticationfailure'), 'danger');
 
-            if (!loggedIn()){
+            if (!loggedIn()) {
                 $userMapper = new UserMapper();
                 $currentUser = $userMapper->getDummyUser();
-            }else{
+            } else {
                 $currentUser = currentUser();
             }
 
@@ -210,16 +208,21 @@ class Auth extends Frontend
     {
         $redirectUrl = '/';
 
-              
-        $auth = new WgquickAuth(
-            null
-        );
-       
-        
-        if ($auth->verify()) {
-            return $redirectUrl;
-        }
 
+        $auth = new WgquickAuth(
+            $this->getView()->getUrl(['action' => $this->getRequest()->getActionName()])
+        );
+
+        if (!$auth->verify()) {
+            $this->dbLog()->info(
+                "login error.",
+                [
+                    'debug' => $auth->debug(false),
+                ]
+            );
+
+            $this->redirect(['module' => 'user', 'controller' => 'login', 'action' => 'index']);
+        }
 
         try {
             $wgUser = [
@@ -228,7 +231,7 @@ class Auth extends Frontend
                 'screen_name' => $auth->user()['nickname'],
                 'oauth_token_user' => null,
             ];
-            
+
             $authProvider = new AuthProvider();
             $existingLink = $authProvider->providerAccountIsLinked('wgquicklogin_wg', $wgUser['user_id']);
 
@@ -309,15 +312,15 @@ class Auth extends Frontend
                     }
 
                     if ($result->getError() != '') {
-                        $this->addMessage($this->getTranslator()->trans('wgquicklogin.'.$result->getError()), 'warning');
+                        $this->addMessage($this->getTranslator()->trans('wgquicklogin.' . $result->getError()), 'warning');
                     }
 
                     $this->addMessage($this->getTranslator()->trans('wgquicklogin.loginsuccess'));
                 } else {
-                    $this->addMessage($this->getTranslator()->trans('wgquicklogin.'.$result->getError()), 'warning');
+                    $this->addMessage($this->getTranslator()->trans('wgquicklogin.' . $result->getError()), 'warning');
                     $redirectUrl = ['module' => 'user', 'controller' => 'login', 'action' => 'index'];
                 }
-                
+
                 $this->redirect($redirectUrl);
             }
 
@@ -333,13 +336,13 @@ class Auth extends Frontend
         } catch (\Exception $e) {
             $this->addMessage($this->getTranslator()->trans('wgquicklogin.authenticationfailure'), 'danger');
 
-            if (!loggedIn()){
+            if (!loggedIn()) {
                 $userMapper = new UserMapper();
                 $currentUser = $userMapper->getDummyUser();
-            }else{
+            } else {
                 $currentUser = currentUser();
             }
-            
+
             $this->dbLog()->info(
                 "User " . $currentUser->getName() . " has an login error.",
                 [
@@ -355,6 +358,7 @@ class Auth extends Frontend
                 $this->redirect(['module' => 'user', 'controller' => 'login', 'action' => 'index']);
             }
         }
+        return '';
     }
 
     /**

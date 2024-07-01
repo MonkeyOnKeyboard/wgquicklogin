@@ -1,7 +1,9 @@
-<?php /** @var $this \Ilch\View */
+<?php
 
-use Modules\wgquicklogin\Models\Log; ?>
+/** @var $this \Ilch\View */
 
+use Modules\wgquicklogin\Models\Log;
+?>
 <script>
     function syntaxHighlight(json) {
         if (typeof json != 'string') {

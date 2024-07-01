@@ -4,7 +4,8 @@ namespace Modules\Wgquicklogin\Controllers\Admin;
 
 use Ilch\Controller\Admin;
 
-class Base extends Admin {
+class Base extends Admin
+{
     /**
      * Init function
      */

@@ -1,10 +1,13 @@
 <?php
+
 /**
  * @copyright Ilch 2
  * @package ilch
  */
 
 namespace Modules\Wgquicklogin\Config;
+
+use Ilch\Database\Exception;
 
 class Config extends \Ilch\Config\Install
 {
@@ -25,9 +28,11 @@ class Config extends \Ilch\Config\Install
             ],
         ],
         'ilchCore' => '2.2.0',
-        'phpVersion' => '8.0'
+        'phpVersion' => '7.4'
     ];
-
+/**
+     * @throws Exception
+     */
     public function install()
     {
         if (! $this->providerExists()) {
@@ -41,7 +46,7 @@ class Config extends \Ilch\Config\Install
                 ->execute();
         }
 
-       $this->db()->query('
+        $this->db()->query('
             CREATE TABLE IF NOT EXISTS `[prefix]_wgquicklogin_log` (
               `id` int(32) unsigned NOT NULL AUTO_INCREMENT,
               `type` varchar(50) DEFAULT \'info\',
@@ -51,7 +56,6 @@ class Config extends \Ilch\Config\Install
               PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         ');
-
         $this->db()
             ->insert('auth_providers_modules')
             ->values([
@@ -63,7 +67,6 @@ class Config extends \Ilch\Config\Install
                 'unlink_action' => 'unlink',
             ])
             ->execute();
-
     }
 
     public function uninstall()
@@ -73,14 +76,12 @@ class Config extends \Ilch\Config\Install
             ->from('auth_providers_modules')
             ->where(['module' => 'wgquicklogin'])
             ->execute();
-
         $this->db()
             ->delete()
             ->from('auth_providers')
             ->where(['key' => 'wgquicklogin_wg'])
             ->execute();
-
-            $this->db()->queryMulti("
+        $this->db()->queryMulti("
                 DROP TABLE IF EXISTS `[prefix]_wgquicklogin_log`;
             ");
     }
@@ -89,8 +90,8 @@ class Config extends \Ilch\Config\Install
     {
         switch ($installedVersion) {
             case "1.0.0":
-                $this->db()->query("UPDATE `[prefix]_modules` SET `icon_small` = '" . $this->config['icon_small'] . "' WHERE `key` = '" . $this->config['key'] . "';");
-                // no break
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      $this->db()->query("UPDATE `[prefix]_modules` SET `icon_small` = '" . $this->config['icon_small'] . "' WHERE `key` = '" . $this->config['key'] . "';");
+            // no break
             case "1.0.1":
                 // no break
         }

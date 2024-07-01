@@ -7,7 +7,8 @@ use Ilch\Date;
 use Ilch\Mapper;
 use Modules\Wgquicklogin\Models\Log;
 
-class DbLog extends Mapper {
+class DbLog extends Mapper
+{
     /**
      * Shortcut for an info log message
      *
@@ -73,14 +74,14 @@ class DbLog extends Mapper {
         }
 
         return $this->db()
-        ->insert('wgquicklogin_log')
-        ->values([
-            'type' => $type,
-            'message' => $message,
-            'data' => $data,
-            'created_at' => (new Date())->toDb()
-        ])
-        ->execute();
+            ->insert('wgquicklogin_log')
+            ->values([
+                'type' => $type,
+                'message' => $message,
+                'data' => $data,
+                'created_at' => (new Date())->toDb()
+            ])
+            ->execute();
     }
 
     /**
@@ -91,11 +92,11 @@ class DbLog extends Mapper {
     public function getAll(): Result
     {
         return $this->db()
-        ->select('*')
-        ->from('wgquicklogin_log')
-        ->order(['created_at' => 'DESC'])
-        ->limit(50)
-        ->execute();
+            ->select('*')
+            ->from('wgquicklogin_log')
+            ->order(['created_at' => 'DESC'])
+            ->limit(50)
+            ->execute();
     }
 
     /**
@@ -109,12 +110,12 @@ class DbLog extends Mapper {
     public function find($logId, array $fields = ['*']): ?Log
     {
         return $this->db()
-        ->select($fields)
-        ->from('wgquicklogin_log')
-        ->where(['id' => $logId])
-        ->limit(1)
-        ->execute()
-        ->fetchObject(Log::class, []);
+            ->select($fields)
+            ->from('wgquicklogin_log')
+            ->where(['id' => $logId])
+            ->limit(1)
+            ->execute()
+            ->fetchObject(Log::class, []);
     }
 
     /**
@@ -125,8 +126,8 @@ class DbLog extends Mapper {
     public function clear(): int
     {
         return $this->db()->delete('wgquicklogin_log')
-        ->where(['id >' => 0])
-        ->execute();
+            ->where(['id >' => 0])
+            ->execute();
     }
 
     /**
@@ -143,13 +144,13 @@ class DbLog extends Mapper {
         $log = $this->find($logId);
 
         if (is_null($log)) {
-            throw new \Exception('No log with id '. $logId . ' found.');
+            throw new \Exception('No log with id ' . $logId . ' found.');
         }
 
         return $this->db()
-        ->delete('wgquicklogin_log')
-        ->where(['id' => $log->getId()])
-        ->execute();
+            ->delete('wgquicklogin_log')
+            ->where(['id' => $log->getId()])
+            ->execute();
     }
 
     /**

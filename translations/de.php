@@ -1,4 +1,5 @@
 <?php
+
 return [
     'wgquicklogin.menu.signinwithapi' => 'Anmelden mit Quicklogin Wargaming',
     'wgquicklogin.menu.apikeys' => 'API Keys',

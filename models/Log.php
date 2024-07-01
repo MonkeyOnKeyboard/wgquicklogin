@@ -44,7 +44,9 @@ class Log extends Model
      */
     protected $created_at;
 
-    public function __construct($params = null) {}
+    public function __construct($params = null)
+    {
+    }
 
     /**
      * @return int

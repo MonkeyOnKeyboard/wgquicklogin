@@ -1,4 +1,5 @@
 <?php
+
 return [
     'wgquicklogin.menu.signinwithapi' => 'Login with WG Quicklogin',
     'wgquicklogin.menu.apikeys' => 'API Keys',
