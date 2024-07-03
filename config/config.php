@@ -30,7 +30,8 @@ class Config extends \Ilch\Config\Install
         'ilchCore' => '2.2.0',
         'phpVersion' => '7.4'
     ];
-/**
+
+    /**
      * @throws Exception
      */
     public function install()
@@ -86,7 +87,7 @@ class Config extends \Ilch\Config\Install
             ");
     }
 
-    public function getUpdate($installedVersion)
+    public function getUpdate(string $installedVersion): string
     {
         switch ($installedVersion) {
             case "1.0.0":
@@ -95,6 +96,8 @@ class Config extends \Ilch\Config\Install
             case "1.0.1":
                 // no break
         }
+
+        return '"' . $this->config['key'] . '" Update-function executed.';
     }
 
     /**
