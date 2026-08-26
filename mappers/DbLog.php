@@ -23,7 +23,7 @@ class DbLog extends Mapper
     }
 
     /**
-     * Shortcut for an debug log message
+     * Shortcut for a debug log message
      *
      * @param $message  string  The message
      * @param $data     mixed   Additional information

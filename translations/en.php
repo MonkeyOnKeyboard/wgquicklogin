@@ -4,7 +4,7 @@ return [
     'wgquicklogin.menu.signinwithapi' => 'Login with WG Quicklogin',
     'wgquicklogin.menu.apikeys' => 'API Keys',
     'wgquicklogin.menu.logs' => 'Logs',
-    
+
 
     'wgquicklogin.logs' => 'Logs',
 
@@ -23,10 +23,10 @@ return [
     'wgquicklogin.wgquicklogin' => 'Login with Quicklogin WG',
     'wgquicklogin.passwordandemailneeded' => 'Please, let us know your E-Mail Address and choose a username.',
     'wgquicklogin.rules' => 'With a click on "Complete registration..." you are acknowleging to have read and accept the following rules.',
-    
+
     'wgquicklogin.logindenied' => 'Login denied',
     'wgquicklogin.loginsuccess' => 'Login successfull',
-    
+
     'wgquicklogin.username' => 'Username',
     'wgquicklogin.email' => 'E-Mail-Address',
 
@@ -41,7 +41,7 @@ return [
     'wgquicklogin.accountAlreadyLinkedToDifferentUser' => 'Account already linked.',
     'wgquicklogin.badrequest' => 'Bad request',
     'wgquicklogin.notauthenticated' => 'Not authenticated',
-    
+
     'wgquicklogin.userLocked' => 'User is locked. Login therefore not possible.',
     'wgquicklogin.userSelectsDelete' => 'User was marked for delete. This process was canceled.',
     'wgquicklogin.cookieStolen' => 'Someone has possibly stolen your cookie. Please check your systems for malware and change your password.',
