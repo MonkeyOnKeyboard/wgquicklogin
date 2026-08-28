@@ -232,7 +232,7 @@ class WgquickAuth
     {
         $content = $this->sendRequest('POST', $this->getOpenIdUrl(), $this->getOpenIdValidationParams());
 
-        return strpos($content, 'is_valid:true') !== false;
+        return str_contains($content, 'is_valid:true');
     }
 
     /**

@@ -24,7 +24,7 @@ class Log extends Model
     protected $type;
 
     /**
-     * The log message as json
+     * The log message as JSON
      *
      * @var string
      */

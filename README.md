@@ -8,7 +8,7 @@ Dieses Modul gibt Ihren Mitgliedern die Möglichkeit, sich über Wargaming Anmel
 # Vorraussetzung
 
 Ilch-Core >= 2.2.0
-PHP-Version >= 7.4
+PHP-Version >= 8.0
 
 # Installation
 

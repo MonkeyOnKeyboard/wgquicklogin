@@ -16,7 +16,7 @@ class Config extends \Ilch\Config\Install
         'icon_small' => 'fa-solid fa-right-to-bracket',
         'author' => 'MonkeyOnKeyboard',
         'hide_menu' => true,
-        'version' => '1.0.2',
+        'version' => '1.0.3',
         'languages' => [
             'de_DE' => [
                 'name' => 'Anmelden mit WG Quicklogin',
@@ -28,7 +28,7 @@ class Config extends \Ilch\Config\Install
             ],
         ],
         'ilchCore' => '2.2.0',
-        'phpVersion' => '7.4'
+        'phpVersion' => '8.0'
     ];
 
     /**
@@ -91,8 +91,6 @@ class Config extends \Ilch\Config\Install
     {
         switch ($installedVersion) {
             case "1.0.0":
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      $this->db()->query("UPDATE `[prefix]_modules` SET `icon_small` = '" . $this->config['icon_small'] . "' WHERE `key` = '" . $this->config['key'] . "';");
-            // no break
             case "1.0.1":
                 // no break
         }
